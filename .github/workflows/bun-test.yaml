@@ -4,8 +4,59 @@ on:
   workflow_dispatch: {}
 
 jobs:
+  checkout-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: git status
+        shell: bash
+
+      - run: |
+          git config --global user.name "TomaszK"
+          git config --global user.email "tomaszK@example.com"
+          echo "After git config"
+          echo test >> foo.txt
+          git status
+          git add .
+          echo "After git add"
+          git status
+          git commit -m "update foo.txt"
+          echo "After git commit"
+          git status
+          git push
+          echo "After git push"
+          
+        
   bun-test:
     runs-on: ubuntu-latest
     steps:
       - uses: oven-sh/setup-bun@v1
       - run: bun --version
+
+  dump_contexts_to_log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
