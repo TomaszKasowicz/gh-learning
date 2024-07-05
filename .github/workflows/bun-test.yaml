@@ -4,6 +4,25 @@ on:
   workflow_dispatch: {}
 
 jobs:
+  checkout-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: git status
+        shell: bash
+
+      - run: |
+          echo test >> foo.txt
+          git status
+          git add .
+          git status
+          git commit -m "update foo.txt"
+          git status
+          git config --global user.name "TomaszK"
+          git config --global user.email "tomaszK@example.com"
+          git push
+          
+        
   bun-test:
     runs-on: ubuntu-latest
     steps:
