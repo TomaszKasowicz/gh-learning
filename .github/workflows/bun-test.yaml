@@ -12,15 +12,19 @@ jobs:
         shell: bash
 
       - run: |
+          git config --global user.name "TomaszK"
+          git config --global user.email "tomaszK@example.com"
+          echo "After git config"
           echo test >> foo.txt
           git status
           git add .
+          echo "After git add"
           git status
           git commit -m "update foo.txt"
+          echo "After git commit"
           git status
-          git config --global user.name "TomaszK"
-          git config --global user.email "tomaszK@example.com"
           git push
+          echo "After git push"
           
         
   bun-test:
