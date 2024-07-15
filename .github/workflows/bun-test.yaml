@@ -9,7 +9,7 @@ jobs:
     steps:  
       - uses: actions/checkout@v4
         with:
-          token: WORKFLOWS_PAT
+          token: ${{ secrets.WORKFLOWS_PAT }}
       - name: Setup git user
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
