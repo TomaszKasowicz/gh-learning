@@ -1,7 +1,8 @@
 name: Check if GH Agent has bun installed
 
 defaults:
-  shell: bash
+  run:
+    shell: bash
   
 on:
   workflow_dispatch: {}
