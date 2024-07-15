@@ -12,7 +12,8 @@ jobs:
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-      - run: echo "Hello" >> foo.txt
-      - run: git add .
-      - run: git commit -m "test: update foo.txt"
-      - run: git push
+      - run: |
+          echo "Hello" >> foo.txt
+          git add .
+          git commit -m "test: update foo.txt"
+          git push
