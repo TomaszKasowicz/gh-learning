@@ -1,5 +1,8 @@
 name: Check if GH Agent has bun installed
 
+defaults:
+  shell: bash
+  
 on:
   workflow_dispatch: {}
 
@@ -14,4 +17,5 @@ jobs:
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
       - run: echo "Hello" >> foo.txt
       - run: git add .
+      - run: git commit -m "test: update foo.txt"
       - run: git push
