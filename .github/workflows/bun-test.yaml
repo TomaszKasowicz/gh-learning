@@ -6,6 +6,10 @@ on:
 jobs:
   bun-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repositories: ["aaa", "bbb"]
     steps:
       - uses: oven-sh/setup-bun@v1
       - run: bun --version
+      - run: echo ${{ matrix.repositories }}
