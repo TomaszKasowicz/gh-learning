@@ -22,4 +22,32 @@ jobs:
       - run: |
           echo "BASE: ${{ env.NX_BASE }}"
           echo "HEAD: ${{ env.NX_HEAD }}"
-    
+
+      - name: Derive Base SHA based on Previous Git Tag
+        if: ${{ github.event_name != 'pull_request' }}
+        shell: bash
+        run: |
+          # Get the most recent tag for this branch
+          RECENT_TAG=$(git describe --abbrev=0 --tags || true)
+          if [[ -z "$RECENT_TAG" ]]; then
+            echo "::notice:: Recent Tag for branch ${{ github.ref_name }} not found. Not Reseting Base SHA"
+            exit 0;
+          fi
+  
+          # Get the previous tag for this branch
+          PREVIOUS_TAG=$(git describe --abbrev=0 --tags --exclude="$RECENT_TAG" || true)
+  
+          if [[ -z "$PREVIOUS_TAG" ]]; then
+            echo "::notice:: Previous Tag for branch ${{ github.ref_name }} not found. Not Reseting Base SHA"
+            exit 0;
+          fi
+  
+          # Reset BASE_SHA to SHA of the previous tag
+          BASE_SHA=$(git rev-list -n 1 $PREVIOUS_TAG)
+          echo "::notice:: Setting NX_BASE=$BASE_SHA base on Tag $PREVIOUS_TAG"
+          echo "NX_BASE=$BASE_SHA" >> $GITHUB_ENV
+
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
+
