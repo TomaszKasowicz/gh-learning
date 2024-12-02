@@ -1,0 +1,23 @@
+name: Check Nrwl Set Shas action when run on tag
+
+on:
+  workflow_dispatch: {}
+
+
+jobs:
+  test-set-shas:
+    name: Test Set SHAs from ${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v4
+
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
+    
